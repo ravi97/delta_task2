@@ -1,5 +1,6 @@
 package com.example.ravikiran.deltatask2;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
     Draw draw;
     private StringBuffer instructions = new StringBuffer("1.Please make sure that you have an internet connection." +
             "\n2.When you want to move the drawable," +
-            "\nsay up,down,left or right" +
-            "\n3.There are three sizes available: small,medium and large");
+            "\nsay top,down,left or right" +
+            "\n3.There are three sizes available: small,medium and large" +
+            "\n4.There are three shapes : triangle, square, circle");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater menuInflater= getMenuInflater();
         menuInflater.inflate(R.menu.menu_main, menu);
@@ -56,8 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.action_help:
+                showAlert();
                 return true;
             case R.id.action_record:
+                recordVoice();
                 return true;
 
         }
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<String> results;
             results=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             text=results.get(0);
-            exportResult(text);
+            exportResult();
         }
     }
     public void showAlert(){
@@ -94,9 +98,10 @@ public class MainActivity extends AppCompatActivity {
         });
         alert.show();
     }
-    public void exportResult(String text){
-        switch(this.text){
-            case "up":
+    public void exportResult(){
+
+         switch(text){
+            case "top":
                 draw.getDirection(1);
                 break;
             case "down":
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "medium":
                 size=2;
-                draw.setSizeShape(size,shape);
+                draw.setSizeShape(size, shape);
                 break;
             case "large":
                 size=3;
@@ -132,8 +137,13 @@ public class MainActivity extends AppCompatActivity {
                 shape=3;
                 draw.setSizeShape(size,shape);
                 break;
+             case "Triangle":
+                 shape=3;
+                 draw.setSizeShape(size,shape);
+                 break;
             default:
                 Toast.makeText(MainActivity.this, this.text + " is not a valid command", Toast.LENGTH_SHORT).show();
+
         }
     }
 }
